@@ -1,0 +1,32 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    View Order
+{% endblock %}
+
+{% block content %}
+<center>
+    <h3>Your Items </h3>
+</center>
+
+<center>
+    
+    Firstaname: {{ view.firstname }} <br>
+    Lastname: {{ view.lastname }} <br>
+    Email: {{ view.email }} <br>
+    Address: {{ view.address }} <br>
+    Apartment: {{ view.apartment }} <br>
+    State: {{ view.state }} <br>
+    Phonenumber: {{ view.phonenumber }} <br>
+    Note: {{ view.note }} <br>
+    Amount: ${{ view.amount }} <br>
+    Cart items: {{ view.cart_item|linebreaks}}  <br>
+
+    
+</center>
+
+    
+{% endblock %}

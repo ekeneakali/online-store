@@ -1,0 +1,42 @@
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+{% block content %}
+
+    <center>
+        {% if messages %}
+        {% for mes in messages %}
+
+        <div class="alert alert-success">{{mes}}</div>
+    {% endfor %}
+    {% endif %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                <table class="table table-bordered">
+                    {{ form.as_table }}
+                </table>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-prmary" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted btn btn-prmary">
+                Need An Account? <a class="ml-2"  href="{% url 'frontend:register' %}">Sign Up Now</a>
+            </small><br>
+            <small class="text-muted btn btn-prmary">
+                <a href="{% url 'frontend:password_reset' %}">Forgot password?</a>
+            </small>
+        </div>
+    </div>
+    </center>
+{% endblock content %}
+

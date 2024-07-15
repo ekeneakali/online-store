@@ -1,0 +1,81 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    cart detail
+{% endblock %}
+
+{% load cart_tag %} 
+{% block content %}
+
+    {% for mes in messages %}
+
+        <div class="alert alert-success">{{ mes }}</div>
+
+        {% endfor %}
+
+        
+    
+
+    Total Length :: {{request.session.cart|length}}
+    
+    Cart Detail:
+    <table class="table table-boredered">
+        <tr>
+        <th>Product Name</th>
+        <th>Product Price</th>
+        <th>Quantity</th>
+        <th>Image</th>
+        <th>SubTotal</th>
+        <th colspan="3">Action</th>
+        <!-- <th>Total Price</th> -->
+        </tr>
+        
+        {% if request.session.cart.items %}
+        {% for key,value in request.session.cart.items %}
+        <tr>
+        <td>{{value.name}}</td>
+        <td>${{value.price|floatformat}}</td>
+        <td>{{value.quantity}}</td>
+        <td><a href="{% url 'frontend:two' value.product_id %}"><img src="{{value.image}}" alt="" width="200px" height="200px"></a></td>
+        <td>${{ value.price|multiply:value.quantity }}</td>
+        <!-- <td>${{ value.price|multiply:value.quantity }}</td> -->
+        <td><a href="{% url 'frontend:item_clear' value.product_id %}" class="btn btn-danger"><i class="fa fa-trash"></i>Delete</a></td>
+        <td><a href="{% url 'frontend:item_increment' value.product_id %}" class="btn btn-primary">+Increment</a></td>
+        <td><a href="{% url 'frontend:item_decrement' value.product_id %}" class="btn btn-primary">-Decrement</a></td>
+    </tr>
+        
+    
+        {% endfor %}
+        {% else %}
+
+        <center>
+            <h3>Your cart is empty </h3>
+
+        </center>
+    {% endif %}
+    
+        
+    </table><br>
+
+    
+    <center>
+        {% if request.session.cart.items %}
+
+         Total Price: ${{ cart_total_amount }}
+
+        {% endif %}
+
+    </center>
+
+    <center>
+        <a href="{% url 'frontend:checkout' %}" class="btn btn-primary">Proceed Checkout</a>
+
+    </center>
+    
+    
+            
+{% endblock %}
+

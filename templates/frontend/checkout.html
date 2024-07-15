@@ -1,0 +1,315 @@
+{% extends 'frontend/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% block content %}
+
+    {% load cart_tag %}
+
+Total Item :: {{request.session.cart|length}}
+
+Cart Detail:
+
+<br>
+{% for mes in messages %}
+
+        <div class="alert alert-success">{{ mes }}</div>
+
+{% endfor %}
+
+
+<!-- BREADCRUMB -->
+
+	
+<div id="breadcrumb" class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="breadcrumb-header">Checkout</h3>
+				<ul class="breadcrumb-tree">
+					<li><a href="#">Home</a></li>
+					<li class="active">Checkout</li>
+				</ul>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+
+			<div class="col-md-7">
+				<!-- Billing Details -->
+				<div class="billing-details">
+					<div class="section-title">
+						<h3 class="title">Billing address</h3>
+					</div>
+					<!-- <form action="" method="post" id="paymentForm" name="myform"> -->
+						<form action="" method="post">
+						{% csrf_token %}
+					<div class="form-group">
+						<input class="input" required type="text" name="firstname" id="firstname" placeholder="First Name">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="text" name="lastname" id="lastname" placeholder="Last Name">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="email" name="email" id="email" placeholder="Email">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="text" name="address" id="address" placeholder="Address">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="text" name="apartment" id="apartment" placeholder="Apartment">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="text" name="state" id="state" placeholder="State">
+					</div>
+					<div class="form-group">
+						<input class="input" required type="text" name="phonenumber" id="phonenumber" placeholder="Phonenumber">
+					</div>
+					{% if request.session.cart.items %}
+					<div class="form-group">
+						<input class="input" required type="hidden" value="{{ cart_total_amount }}" name="amount"  id="amount" placeholder="Amount">
+					</div>
+					{% endif %}
+					{% if request.session.cart.items %}
+					<div class="form-group">
+						<input class="input" required type="hidden" value="{{ request.session.cart }}" name="cart-item" id="cart-item" placeholder="Cartitem">
+					</div>
+					{% endif %}
+					
+				</div>
+				<!-- /Billing Details -->
+
+				<!-- Shiping Details -->
+				
+				<!-- /Shiping Details -->
+
+				<!-- Order notes -->
+				<div class="order-notes">
+					<textarea class="input" placeholder="Order Notes" name="note" id="note"></textarea>
+				</div>
+				<!-- /Order notes -->
+			</div>
+
+			<!-- Order Details -->
+			<div class="col-md-5 order-details">
+				<div class="section-title text-center">
+					<h3 class="title">Your Order</h3>
+				</div>
+				
+				<div class="order-summary">
+					<div class="order-col">
+						<!-- <div><strong>IMAGE</strong></div> -->
+						<div><strong>PRODUCT</strong></div>
+						
+						<div><strong>TOTAL</strong></div>
+					</div>
+					{% for key,value in request.session.cart.items %}
+					<div class="order-products">
+						<div class="order-col">
+							
+        					<div><img src="{{ value.image }}" alt="" width="50px" height="50px"></div><br>
+							<div>{{ value.quantity }}x {{value.name}}</div>
+							
+							<!-- <div>{{ value.quantity }}</div> -->
+							<div>${{ value.price|multiply:value.quantity }}</div>
+							
+							
+						</div>
+						
+					</div>
+					
+					{% endfor %}
+							
+					<div class="order-col">
+						<div><strong>GRAND TOTAL</strong></div>
+						{% if request.session.cart.items %}
+						<div><strong class="order-total">${{ cart_total_amount }}</strong></div>
+						{% endif %}
+					</div>
+					
+					<div class="order-col">
+						<div>Shiping</div>
+						<div><strong>FREE</strong></div>
+					</div>
+					
+				</div>
+				<!-- <div class="payment-method">
+					<div class="input-radio">
+						<input type="radio" name="payment" id="payment-1">
+						<label for="payment-1">
+							<span></span>
+							Direct Bank Transfer
+						</label>
+						<div class="caption">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+					<div class="input-radio">
+						<input type="radio" name="payment" id="payment-2">
+						<label for="payment-2">
+							<span></span>
+							Cheque Payment
+						</label>
+						<div class="caption">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+					<div class="input-radio">
+						<input type="radio" name="payment" id="payment-3">
+						<label for="payment-3">
+							<span></span>
+							Paypal System
+						</label>
+						<div class="caption">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+				</div>
+				<div class="input-checkbox">
+					<input type="checkbox" id="terms">
+					<label for="terms">
+						<span></span>
+						I've read and accept the <a href="#">terms & conditions</a>
+					</label>
+				</div> -->
+				<button type="submit" class="primary-btn order-submit">Place order</button>
+				<!-- <button class="btn" value="Place order" type="submit" onclick="payWithPaystack()">Place order</button> -->
+			</form>
+				<!-- <a href="#" class="primary-btn order-submit">Place order</a> -->
+			</div>
+			<!-- /Order Details -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+
+<!-- /SECTION -->
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+
+<script>
+    
+const paymentForm = document.getElementById('paymentForm');
+paymentForm.addEventListener("submit", payWithPaystack, false);
+
+function payWithPaystack(e) {
+  e.preventDefault();
+
+  let handler = PaystackPop.setup({
+    key: 'pk_live_01a45ddf443acf113c7044470968542851da7f88', // Replace with your public key
+    email: document.getElementById("email").value,
+    amount: document.getElementById("amount").length *100,
+
+    metadata: {
+    custom_fields: [
+    {
+            display_name: "firstname",
+            variable_name: "firstname",
+            value: document.getElementById("firstname").value,
+
+        },
+        {
+            display_name: "lastname",
+            variable_name: "lastname",
+            value: document.getElementById("lastname").value,           
+        },
+        
+        {
+            display_name: "telephone",
+            variable_name: "telephone",
+            value: document.getElementById("telephone").value,           
+        },
+        {
+            display_name: "postal code",
+            variable_name: "postal-code",
+            value: document.getElementById("input-postcode").value,           
+        },
+        
+        {
+            display_name: "state",
+            variable_name: "state",
+            value: document.getElementById("state").value,
+
+        },
+        {
+            display_name: "city",
+            variable_name: "city",
+            value: document.getElementById("city").value,
+                   
+        },
+        {
+            display_name: "address1",
+            variable_name: "address1",
+            value: document.getElementById("address-1").value,           
+        },
+        {
+            display_name: "addreess2",
+            variable_name: "address-2",
+            value: document.getElementById("address-2").value,           
+        },
+        {
+            display_name: "order-notes",
+            variable_name: "order notes",
+            value: document.getElementById("note").value,           
+        },
+        
+        
+        
+        {
+            display_name: "Cart Items",
+            variable_name: "cart_items",
+            value: document.getElementById("cart-item").value,
+        },
+        
+            
+        
+    ]
+},
+
+
+    
+    // amount:"5000" * 100,
+    
+    // ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+
+    
+
+    // label: "Optional string that replaces customer email"
+    onClose: function(){
+      alert('Window closed.');
+    },
+    callback: function(response){
+      let message = 'Payment complete! Reference: ' + response.reference;
+      alert(message);
+      document.myform.submit();
+    }
+  });
+
+  
+
+  handler.openIframe();
+  
+}
+
+</script>
+
+
+{% endblock %}

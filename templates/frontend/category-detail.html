@@ -1,0 +1,45 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+Category Detail
+{% endblock %}
+
+ 
+{% block content %}
+
+    {% for mes in messages %}
+
+        <div class="alert alert-success">{{ mes }}</div>
+
+        {% endfor %}
+
+        
+    <div class="container"><br><br>
+        <div class="row">
+            {% if product %}
+            {% for x in product %}
+            <div class="col-md-4">
+
+                <a href="{% url 'frontend:two' x.id %}"><img src="{{ x.image.url }}" alt="" width="200px" height="200px"></a>
+                <p>
+                    <a href="">{{ x.name }}</a>
+                </p>
+
+            </div>
+            {% endfor %}
+                {% else %}
+
+                    <center>
+                        <h3>No product in this category</h3>
+                    </center>
+            {% endif %}
+
+        </div>
+    </div>
+
+            
+{% endblock %}
+

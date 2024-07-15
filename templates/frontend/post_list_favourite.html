@@ -1,0 +1,38 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    favourite_post
+{% endblock %}
+
+{% block content %}
+
+{% if favourite_post %}
+<div class="container">
+    <div class="row">
+        {% for x in favourite_post %}
+        <div class="col-md-4">
+            <center>
+                <h3>{{x.name}}</h3><br>
+                <img src="{{x.image.url}}" alt="img" width="250px" height="250px"><br>
+                ${{x.price}}<br>
+                <a href="{% url 'frontend:two' x.id %}" class="btn btn-primary">Go back</a>
+                
+            </center>
+        </div>
+    {% endfor %}
+
+    </div>
+
+</div>
+    
+    {% else %}
+    <center>
+        <h3>your wishlist is empty</h3>
+        <a href="{% url 'home' %}" class="btn btn-primary">Go to home</a>
+    </center>
+    {% endif %}
+        
+{% endblock %}

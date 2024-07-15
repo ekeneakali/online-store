@@ -1,0 +1,42 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Order tracking
+{% endblock %}
+
+{% block content %}
+<center>
+    <h3>Your Order </h3>
+</center>
+
+{% for mes in messages %}
+    <div class="alert alert-success">{{ mes }}</div>
+{% endfor %}
+
+<table class="table table-boredered">
+    <tr>
+        <th>Status</th>
+        <th>Date</th>
+        <th colspan="2">Action</th>
+    </tr>
+    {% if track %}
+    {% for x in track %}
+    <tr>
+        <td>Paid</td>
+        <td>{{ x.created_at }}</td>
+        <td><a href="{% url 'frontend:delete_tracking' x.id %}" class="btn btn-danger">Delete <i class="fa fa-trash"></i></a></td>
+        <td><a href="{% url 'frontend:view_order' x.id %}" class="btn btn-primary">View <i class="fa fa-eye"></i></a></td>
+
+    </tr>
+    {% endfor %}
+        {% else %}
+            <center>
+                <h3>You don't have an order</h3>
+            </center>
+    {% endif %}
+
+</table>
+{% endblock %}

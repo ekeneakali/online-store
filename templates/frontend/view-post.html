@@ -1,0 +1,52 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    view post
+{% endblock %}
+{% block content %}
+<!--Contact form-->
+<center>
+    <div class="container">
+        <div class="row">
+            
+             
+            {% if post %}
+                {% for x in post %}
+                    <div class="col-md-4">
+                        <p>
+            
+                            
+                        
+                            
+                            {{x.name}}
+            
+                        </p>
+                        <img src="{{x.image.url}}" alt="img" height="200px" width="200px"><br>
+                        <p>
+                            <a href="{% url 'frontend:two' x.id %}" class="btn btn-primary"><i class="fa fa-eye"></i>View product</a><br><br><br>
+                            <a href="{% url 'frontend:edit_post' x.id %}" class="btn btn-primary"><i class="fa fa-edit"></i>Edit product</a><br><br><br>
+                            <a href="{% url 'frontend:delete_post' x.id %}" class="btn btn-danger"><i class="fa fa-trash"></i>Delete product</a><br><br><br>
+                        </p>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <h3>no product to edit</h3>
+            {% endif %}
+            
+
+
+
+            
+        </div>
+
+    </div>
+
+</center>
+
+
+                    
+{% endblock %}
+

@@ -1,0 +1,34 @@
+<!-- django_project/users/templates/register.html -->
+{% extends "frontend/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Show Video
+{% endblock %}
+
+{% block content %}
+
+
+<center>
+    <div class="container">
+        <div class="row">
+        {% for x in post %}
+            <div class="col-md-4">
+            <p>
+               Title : <a href="">{{x.title}}</a><br>
+                Created By: <a href="">{{x.created_by}}</a>
+            </p>
+            <video src="{{x.video_upload.url}}" controls></video><br><br>
+            <p>111,33 View</p>
+            <a href="{% url 'frontend:view_video' x.id %}" class="btn btn-primary">View</a>
+            {% endfor %}
+            
+            </div>
+            
+
+        </div>
+
+    </div>
+</center>
+{% endblock %}
