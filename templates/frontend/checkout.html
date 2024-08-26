@@ -57,8 +57,8 @@ Cart Detail:
 					<div class="section-title">
 						<h3 class="title">Billing address</h3>
 					</div>
-					<!-- <form action="" method="post" id="paymentForm" name="myform"> -->
-						<form action="" method="post">
+					<form action="" method="post" id="paymentForm" name="myform">
+						<!-- <form action="" method="post"> -->
 						{% csrf_token %}
 					<div class="form-group">
 						<input class="input" required type="text" name="firstname" id="firstname" placeholder="First Name">
@@ -67,7 +67,7 @@ Cart Detail:
 						<input class="input" required type="text" name="lastname" id="lastname" placeholder="Last Name">
 					</div>
 					<div class="form-group">
-						<input class="input" required type="email" name="email" id="email" placeholder="Email">
+						<input class="input" required type="hidden" name="email" id="email" value="{{ request.user.email}}" placeholder="Email">
 					</div>
 					<div class="form-group">
 						<input class="input" required type="text" name="address" id="address" placeholder="Address">
@@ -83,12 +83,13 @@ Cart Detail:
 					</div>
 					{% if request.session.cart.items %}
 					<div class="form-group">
-						<input class="input" required type="hidden" value="{{ cart_total_amount }}" name="amount"  id="amount" placeholder="Amount">
+						<input input id="amount" value="{{ cart_total_amount|floatformat:'2g' }}" hidden>
 					</div>
 					{% endif %}
+				
 					{% if request.session.cart.items %}
 					<div class="form-group">
-						<input class="input" required type="hidden" value="{{ request.session.cart }}" name="cart-item" id="cart-item" placeholder="Cartitem">
+						<input class="input" required type="hidden" value="{{ request.cart.session }}" name="cart-item" id="cart-item" placeholder="Cartitem">
 					</div>
 					{% endif %}
 					
@@ -127,7 +128,7 @@ Cart Detail:
 							<div>{{ value.quantity }}x {{value.name}}</div>
 							
 							<!-- <div>{{ value.quantity }}</div> -->
-							<div>${{ value.price|multiply:value.quantity }}</div>
+							<div>${{ value.price|multiply:value.quantity}}</div>
 							
 							
 						</div>
@@ -149,47 +150,9 @@ Cart Detail:
 					</div>
 					
 				</div>
-				<!-- <div class="payment-method">
-					<div class="input-radio">
-						<input type="radio" name="payment" id="payment-1">
-						<label for="payment-1">
-							<span></span>
-							Direct Bank Transfer
-						</label>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-					<div class="input-radio">
-						<input type="radio" name="payment" id="payment-2">
-						<label for="payment-2">
-							<span></span>
-							Cheque Payment
-						</label>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-					<div class="input-radio">
-						<input type="radio" name="payment" id="payment-3">
-						<label for="payment-3">
-							<span></span>
-							Paypal System
-						</label>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="input-checkbox">
-					<input type="checkbox" id="terms">
-					<label for="terms">
-						<span></span>
-						I've read and accept the <a href="#">terms & conditions</a>
-					</label>
-				</div> -->
-				<button type="submit" class="primary-btn order-submit">Place order</button>
-				<!-- <button class="btn" value="Place order" type="submit" onclick="payWithPaystack()">Place order</button> -->
+				
+				<!-- <button type="submit" class="primary-btn order-submit">Place order</button> -->
+				<button class="primary-btn order-submit" value="Place order" type="submit" onclick="payWithPaystack()">Place order</button>
 			</form>
 				<!-- <a href="#" class="primary-btn order-submit">Place order</a> -->
 			</div>
@@ -216,9 +179,8 @@ function payWithPaystack(e) {
   let handler = PaystackPop.setup({
     key: 'pk_live_01a45ddf443acf113c7044470968542851da7f88', // Replace with your public key
     email: document.getElementById("email").value,
-    amount: document.getElementById("amount").length *100,
-
-    metadata: {
+    amount: document.getElementById("amount").value *100,
+	metadata: {
     custom_fields: [
     {
             display_name: "firstname",
@@ -233,14 +195,14 @@ function payWithPaystack(e) {
         },
         
         {
-            display_name: "telephone",
-            variable_name: "telephone",
-            value: document.getElementById("telephone").value,           
+            display_name: "address",
+            variable_name: "address",
+            value: document.getElementById("address").value,           
         },
         {
-            display_name: "postal code",
-            variable_name: "postal-code",
-            value: document.getElementById("input-postcode").value,           
+            display_name: "apartment",
+            variable_name: "apartment",
+            value: document.getElementById("apartment").value,           
         },
         
         {
@@ -249,28 +211,18 @@ function payWithPaystack(e) {
             value: document.getElementById("state").value,
 
         },
-        {
-            display_name: "city",
-            variable_name: "city",
-            value: document.getElementById("city").value,
+        // {
+        //     display_name: "city",
+        //     variable_name: "city",
+        //     value: document.getElementById("city").value,
                    
-        },
-        {
-            display_name: "address1",
-            variable_name: "address1",
-            value: document.getElementById("address-1").value,           
-        },
-        {
-            display_name: "addreess2",
-            variable_name: "address-2",
-            value: document.getElementById("address-2").value,           
-        },
-        {
-            display_name: "order-notes",
-            variable_name: "order notes",
-            value: document.getElementById("note").value,           
-        },
+        // },
         
+        // {
+        //     display_name: "order-notes",
+        //     variable_name: "order notes",
+        //     value: document.getElementById("note").value,           
+        // },
         
         
         {
@@ -286,6 +238,8 @@ function payWithPaystack(e) {
 
 
     
+
+	
     // amount:"5000" * 100,
     
     // ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
